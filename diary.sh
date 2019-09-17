@@ -1,26 +1,45 @@
 #!/bin/bash
 ################################
+#  ____  _                     #
+# |  _ \(_) __ _ _ __ _   _    #
+# | | | | |/ _` | '__| | | |   #
+# | |_| | | (_| | |  | |_| |   #
+# |____/|_|\__,_|_|   \__, |   #
+#                     |___/    #
+#                              #
+################################
 # Diary script by @Byteofsoren #
 # Creates a .ms file for the   #
-# current date in the folder   #
-# ~/scripts/data/diary         #
+# current date in the          #
+# DIARYDATA folder             #
 # Then edits it with $EDITOR.  #
 ################################
 
+#===[ Config ]========================
 
-EDITOR=vim
-CURRENT=$(pwd)
+# Change this path to where you want to store your diary.
 DIARYDATA=~/scripts/data/diary
+
+# Change this to what editor you want to use
+EDITOR=vim
+
+#===[ Code ]===========================
+CURRENT=$(pwd)
 USER=""
 TAG=""
 
 function create_change_diary() {
-    #function_body
+    # Create change diary is the default (with no parameters given)
+    # function in the scripts it also creates new diary's with date.
+    # To days date
     TODAY=$(date +%F).ms
+    # All files in the DIARYDATA folder.
     ALLFINLES=$(ls $DIARYDATA)
+    # Add the current date to the list of alible files.
     FILES=$(bash -c "echo $'$ALLFINLES\n$TODAY'")
-    # echo "$TODAY"
+    # Show them in reverse order such that the newest file is last.
     SELECT=$(echo "$FILES" | perl -e 'print reverse <>'| fzf)
+    # Edit diary with editor
     edit_diary $SELECT
 }
 
@@ -121,4 +140,5 @@ function diary_help() {
 }
 
 
+# Start the main function.
 main $@
